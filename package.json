@@ -1,6 +1,6 @@
 {
   "name": "react-native-language-detection",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Using Core ML on Apple systems and ML Kit on Android devices to detection language.",
   "homepage": "https://github.com/xmflsct/react-native-language-detection",
   "main": "lib/index.js",

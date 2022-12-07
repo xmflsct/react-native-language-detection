@@ -5,8 +5,14 @@ const detectLanguage = async (
 ): Promise<{ language: string; confidence: number }[]> => {
   switch (Platform.OS) {
     case 'ios':
-    case 'android':
       return await NativeModules.RNLanguageDetectionModule.detection(original)
+    case 'android':
+      return (
+        (await NativeModules.RNLanguageDetectionModule.detection(original)) as {
+          language: string
+          confidence: number
+        }[]
+      ).filter(lang => lang.language !== 'und')
     default:
       console.error('Platform not supported')
       return Promise.reject()
