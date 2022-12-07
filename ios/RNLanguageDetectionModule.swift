@@ -10,17 +10,20 @@ import NaturalLanguage
 @objc(RNLanguageDetectionModule)
 class RNLanguageDetectionModule: NSObject {
   @objc
-  func detection(_ original: String, resolve: RCTPromiseResolveBlock, rejecter reject: RCTPromiseRejectBlock) -> Void {
+  func detection(_ original: String, resolve: @escaping RCTPromiseResolveBlock, rejecter reject: @escaping RCTPromiseRejectBlock) -> Void {
     let languageRecognizer = NLLanguageRecognizer()
     languageRecognizer.processString(original)
 
-    let detected = languageRecognizer.dominantLanguage
+    let detected = languageRecognizer.languageHypotheses(withMaximum: 1)
 
-    if detected?.rawValue != nil {
-      resolve(["detected": detected?.rawValue])
-    } else {
-      reject("detection_error", "Language not recognized", nil)
+    let result: NSMutableArray = []
+    for item in detected {
+      let temp: NSMutableDictionary = [:]
+      temp["language"] = item.key
+      temp["confidence"] = item.value
+      result.add(temp)
     }
+    resolve(result)
   }
 
   @objc
